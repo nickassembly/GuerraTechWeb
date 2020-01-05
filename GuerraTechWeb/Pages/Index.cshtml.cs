@@ -15,12 +15,14 @@ namespace GuerraTechWeb.Pages
 
    public class IndexModel : PageModel
    {
-      //private readonly ILogger<IndexModel> _logger;
+      // TODO use config file to pass in email and password values
 
-      //public IndexModel(ILogger<IndexModel> logger)
-      //{
-      //   _logger = logger;
-      //}
+      private readonly ILogger<IndexModel> _logger;
+
+      public IndexModel(ILogger<IndexModel> logger)
+      {
+         _logger = logger;
+      }
 
       public void OnGet()
       {

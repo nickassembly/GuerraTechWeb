@@ -1,0 +1,98 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home";
+}
+
+<!-- Wrapper -->
+
+<div id="wrapper" class="divided">
+    <!-- One -->
+    <section class="banner style1 orient-left content-align-left image-position-right fullscreen onload-image-fade-in onload-content-fade-right">
+        <div class="content">
+            <h1>Guerra Technology</h1>
+            <p class="major">A Software Consultation company focusing on Custom Programming, Security and Web Development.</p>
+            <ul class="actions stacked">
+                <li><a asp-page="/About" class="button big wide smooth-scroll-middle">About Us</a></li>
+            </ul>
+        </div>
+        <div class="image">
+            <img src="~/images/Bluewall.jpg" alt="" />
+        </div>
+    </section>
+
+    <!-- Two -->
+    <section class="spotlight style1 orient-right content-align-left image-position-center onscroll-image-fade-in" id="first">
+        <div class="content">
+            <h2>Custom Programming</h2>
+            <p>Our team of experienced developers can make your vision a reality by using all the latest tools and techniques to maximize efficiency and exposure</p>
+            <ul class="actions stacked">
+                <li><a asp-page="/CustomProgramming" class="button">Custom Programming</a></li>
+            </ul>
+        </div>
+        <div class="image">
+            <img src="~/images/CustomProgramming.jpg" alt="" />
+        </div>
+    </section>
+
+    <!-- Three -->
+    <section class="spotlight style1 orient-left content-align-left image-position-center onscroll-image-fade-in">
+        <div class="content">
+            <h2>Security</h2>
+            <p>We are prepared to look at all aspects of any online presence and offer advice on how to secure your online business and services from top to bottom.</p>
+            <ul class="actions stacked">
+                <li><a asp-page="/Security" class="button">Security</a></li>
+            </ul>
+        </div>
+        <div class="image">
+            <img src="~/images/Fence.jpg" alt="" />
+        </div>
+    </section>
+
+    <!-- Four -->
+    <section class="spotlight style1 orient-right content-align-left image-position-center onscroll-image-fade-in">
+        <div class="content">
+            <h2>Web Development</h2>
+            <p>Take your business to the next level with an online presence. We can set up a website, storefront and even provide hosting based on your needs.</p>
+            <ul class="actions stacked">
+                <li><a asp-page="/WebDevelopment" class="button">Web Development</a></li>
+            </ul>
+        </div>
+        <div class="image">
+            <img src="~/images/InternetCafe.jpg" alt="" />
+        </div>
+    </section>
+
+    <!-- Seven -->
+    <section class="wrapper style1 align-center">
+        <div class="inner medium">
+            <h2>Email Us</h2>
+            <form method="post">
+                <div class="fields">
+                    <div class="field half">
+                        <label for="name">Name</label>
+                        <input type="text" asp-for="sendMail.Name" name="name" id="name" value="" />
+                    </div>
+                    <div class="field half">
+                        <label for="email">Email</label>
+                        <input type="email" asp-for="sendMail.Email" name="email" id="email" value="" />
+                    </div>
+                    <div class="field half">
+                        <label for="subject">Subject</label>
+                        <input type="text" asp-for="sendMail.Subject" name="subject" id="subject" value="" />
+                    </div>
+                    <div class="field">
+                        <label for="message">Message</label>
+                        <textarea asp-for="sendMail.Message" name="message" id="message" rows="6"></textarea>
+                    </div>
+                </div>
+                <ul class="actions special">
+                    <li><input type="submit" name="submit" id="submit" value="Send Message" /></li>
+                    @ViewData["Message"]
+                </ul>
+            </form>
+
+        </div>
+    </section>
+
+</div>

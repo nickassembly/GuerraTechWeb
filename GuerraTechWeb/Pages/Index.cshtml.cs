@@ -9,53 +9,58 @@ using Microsoft.Extensions.Logging;
 using System.Net.Mail;
 using GuerraTechWeb.Models;
 using System.Net;
+using Microsoft.Extensions.Configuration;
 
 namespace GuerraTechWeb.Pages
 {
 
-   public class IndexModel : PageModel
-   {
-      // TODO use config file to pass in email and password values
+    public class IndexModel : PageModel
+    {
 
-      private readonly ILogger<IndexModel> _logger;
+        private readonly ILogger<IndexModel> _logger;
+        private readonly IConfiguration _configuration;
 
-      public IndexModel(ILogger<IndexModel> logger)
-      {
-         _logger = logger;
-      }
+        public IndexModel(ILogger<IndexModel> logger, IConfiguration configuration)
+        {
+            _logger = logger;
+            _configuration = configuration;
+        }
 
-      public void OnGet()
-      {
+        public void OnGet()
+        {
 
-      }
+        }
 
-      [BindProperty]
-      public SendMessage sendMail { get; set; }
+        [BindProperty]
+        public SendMessage sendMail { get; set; }
 
-      public async Task OnPost()
-      {
+        public async Task OnPost()
+        {
+           var smtpAddress = _configuration.GetValue<string>("EmailSettings:SMTP");
+           var emailUserName = _configuration.GetValue<string>("EmailSettings:UserName");
+           var emailPassword = _configuration.GetValue<string>("EmailSettings:Password");
 
-         using (MailMessage mail = new MailMessage())
-         {
-            string To = "guerratechinfo@gmail.com";
-            string Subject = sendMail.Subject;
-            string Body = sendMail.Message;
-            mail.From = new MailAddress("guerratechinfo@gmail.com");
-            mail.To.Add(To);
-            mail.Subject = Subject;
-            mail.Body = Body;
-            mail.IsBodyHtml = false;
-
-            using (SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587))
+            using (MailMessage mail = new MailMessage())
             {
-               smtp.Credentials = new NetworkCredential("guerratechinfo@gmail.com", "password");
-               smtp.EnableSsl = true;
-               smtp.Send(mail);
+                string To = emailUserName.ToString();
+                string Subject = sendMail.Subject;
+                string Body = sendMail.Message;
+                mail.From = new MailAddress(sendMail.Email);
+                mail.To.Add(To);
+                mail.Subject = Subject;
+                mail.Body = Body;
+                mail.IsBodyHtml = true;
+
+                using (SmtpClient smtp = new SmtpClient(smtpAddress, 587))
+                {
+                    smtp.Credentials = new NetworkCredential(emailUserName, emailPassword);
+                    smtp.EnableSsl = true;
+                    smtp.Send(mail);
+                }
             }
-         }
 
-      }
+        }
 
 
-   }
+    }
 }

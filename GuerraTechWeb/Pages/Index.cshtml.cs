@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using System.Net.Mail;
 using GuerraTechWeb.Models;
-using System.Net;
 using Microsoft.Extensions.Configuration;
+using System.Net;
 
 namespace GuerraTechWeb.Pages
 {
@@ -51,7 +47,7 @@ namespace GuerraTechWeb.Pages
                 mail.Body = Body;
                 mail.IsBodyHtml = true;
 
-                using (SmtpClient smtp = new SmtpClient(smtpAddress, 587))
+                using (SmtpClient smtp = new SmtpClient(smtpAddress, 465))
                 {
                     smtp.Credentials = new NetworkCredential(emailUserName, emailPassword);
                     smtp.EnableSsl = true;

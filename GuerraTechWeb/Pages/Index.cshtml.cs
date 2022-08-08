@@ -6,6 +6,9 @@ using System.Net.Mail;
 using GuerraTechWeb.Models;
 using Microsoft.Extensions.Configuration;
 using System.Net;
+using FluentEmail.Smtp;
+using FluentEmail.Core;
+using System;
 
 namespace GuerraTechWeb.Pages
 {
@@ -32,31 +35,36 @@ namespace GuerraTechWeb.Pages
 
         public async Task OnPost()
         {
-           var smtpAddress = _configuration.GetValue<string>("EmailSettings:SMTP");
-           var emailUserName = _configuration.GetValue<string>("EmailSettings:UserName");
-           var emailPassword = _configuration.GetValue<string>("EmailSettings:Password");
+           // var smtpAddress = _configuration.GetValue<string>("EmailSettings:SMTP");
+            var emailServerUsername = _configuration.GetValue<string>("EmailSettings:UserName");
+           // var emailServerPassword = _configuration.GetValue<string>("EmailSettings:Password");
 
-            using (MailMessage mail = new MailMessage())
+            var sender = new SmtpSender(() => new SmtpClient("localhost")
             {
-                string To = emailUserName.ToString();
-                string Subject = sendMail.Subject;
-                string Body = sendMail.Message;
-                mail.From = new MailAddress(sendMail.Email);
-                mail.To.Add(To);
-                mail.Subject = Subject;
-                mail.Body = Body;
-                mail.IsBodyHtml = true;
+                EnableSsl = true,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                Port = 25, 
+            });
 
-                using (SmtpClient smtp = new SmtpClient(smtpAddress, 465))
-                {
-                    smtp.Credentials = new NetworkCredential(emailUserName, emailPassword);
-                    smtp.EnableSsl = true;
-                    smtp.Send(mail);
-                }
+            Email.DefaultSender = sender;
+
+            try
+            {
+                var email = await Email
+                    .From(sendMail.Email)
+                    .To(emailServerUsername)
+                    .Subject(sendMail.Subject)
+                    .Body(sendMail.Message)
+                    .SendAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
             }
 
         }
 
-
     }
+
+
 }
